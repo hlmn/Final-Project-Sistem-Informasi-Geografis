@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>SI | Mechanical Competition</title>
+    <title>CalcGIS</title>
 <!--     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css"> -->
     
@@ -49,8 +49,8 @@
       <header class="main-header">
         <!-- Logo -->
         <a href="/" class="logo">
-          <span class="logo-mini"><b>MECHOM</b></span>
-          <span class="logo-lg"><b>Mechanical</b>Competition</span>
+          <span class="logo-mini"><b>CalcGIS</b></span>
+          <span class="logo-lg"><b>Calc</b>GIS</span>
         </a>
 
       <nav class="navbar navbar-static-top">
@@ -124,7 +124,7 @@
             </li>
             <li id="aktifpolyline" class="treeview menu-open">
               <a href="#" class="warnain disableJs">
-                <i class="fa fa-users"></i> <span>Polygon</span>
+                <i class="fa fa-users"></i> <span>Polyline</span>
                 <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>
