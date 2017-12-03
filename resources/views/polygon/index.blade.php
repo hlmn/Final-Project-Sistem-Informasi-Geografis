@@ -158,6 +158,7 @@
   </div>
   <div class="col-md-3">
     	<button class="btn btn-danger" id="reset">Clear Map</button>
+    	@if(Auth::check())
     	<form style="display: inline;" id="form" method="POST" action="{{route('submit.polygon')}}">
     		<input type="hidden" id="path" name="path"  class="form-control">
     		{{csrf_field()}}
@@ -169,6 +170,7 @@
 			{{-- <input type="text" name=""  class="form-control"> --}}
     		<button class="btn btn-primary" type="submit" id="submit">Submit</button>
     	</form>
+    	@endif
     	
    </div>
 </div>
@@ -399,7 +401,7 @@
 
 	    $('#reset').on('click', function(){
 	    	// draw.setMap(null);
-	    	draw.getPaths().clear();
+	    	draw.getPath().clear();
 	    	drawingManager.setOptions({
 			    drawingMode: google.maps.drawing.OverlayType.POLYGON,
 			    polygonOptions: {

@@ -97,9 +97,9 @@
           @else
 
           @endif
-          <li>
+          {{-- <li>
             
-          </li>
+          </li> --}}
           <ul class="sidebar-menu tree" data-widget="tree">
             <li class="header">PILIHAN MENU</li>
 
@@ -113,13 +113,16 @@
               </a>
                <ul class="treeview-menu" style="">
                 <li class="" id="anakpolygon">
-                  <a href="{{route('index.polygon')}}"><i class="fa fa-plus"></i> <span>Tambah</span></a>
+                  <a href="{{route('index.polygon')}}"><i class="fa fa-plus"></i> <span>Create</span></a>
                 </li>
-                @foreach($data['shapes']->where('tipe', 'Polygon')->sortByDesc('created_at')->values() as $shape)
-                  <li class="" id="anak{{$shape->id}}">
-                    <a href="{{route('view.polygon', ['shape' => $shape->id])}}"><i class="fa fa-circle-o"></i> <span>{{$shape->id}}</span></a>
-                  </li>
-                @endforeach
+                @if(Auth::check())
+                {{-- {{dd(Auth::user()->getShape())}} --}}
+                  @foreach(Auth::user()->shapes->where('tipe', 'Polygon')->sortByDesc('created_at')->values() as $shape)
+                    <li class="" id="anak{{$shape->id}}">
+                      <a href="{{route('view.polygon', ['shape' => $shape->id])}}"><i class="fa fa-circle-o"></i> <span>{{$shape->id}}</span></a>
+                    </li>
+                  @endforeach
+                @endif
               </ul>
             </li>
             <li id="aktifpolyline" class="treeview menu-open">
@@ -131,13 +134,16 @@
               </a>
                <ul class="treeview-menu" style="">
                 <li class="" id="anakpolyline">
-                  <a href="{{route('index.polyline')}}"><i class="fa fa-plus"></i> <span>Tambah</span></a>
+                  <a href="{{route('index.polyline')}}"><i class="fa fa-plus"></i> <span>Create</span></a>
                 </li>
-                @foreach($data['shapes']->where('tipe', 'Polyline')->sortByDesc('created_at')->values() as $shape)
-                  <li class="" id="anak{{$shape->id}}">
-                    <a href="{{route('view.polyline', ['shape' => $shape->id])}}"><i class="fa fa-circle-o"></i> <span>{{$shape->id}}</span></a>
-                  </li>
-                @endforeach
+                @if(Auth::check())
+
+                  @foreach(Auth::user()->shapes->where('tipe', 'Polyline')->sortByDesc('created_at')->values() as $shape)
+                    <li class="" id="anak{{$shape->id}}">
+                      <a href="{{route('view.polyline', ['shape' => $shape->id])}}"><i class="fa fa-circle-o"></i> <span>{{$shape->id}}</span></a>
+                    </li>
+                  @endforeach
+                @endif
               </ul>
             </li>
             

@@ -26,6 +26,7 @@ class PolylineController extends Controller
     	$shape->lat = $request->lat;
         $shape->zoom = $request->zoom;
     	$shape->lng = $request->lng;
+        $shape->user_id = Auth::id();
     	$shape->save();
 
     	return redirect(route('view.polyline', ['shape' => $shape->id]));

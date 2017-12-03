@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Shape;
 use Uuid;
+use Auth;
 
 class PolygonController extends Controller
 {
@@ -12,7 +13,8 @@ class PolygonController extends Controller
     {
     	$this->setActive('polygon');
     	$this->setTitle('polygon');
-
+        // dd(Auth::check());
+        // dd(Auth::user()->getShape());
     	return view('polygon.index', $this->data);
     }
 
@@ -26,6 +28,7 @@ class PolygonController extends Controller
     	$shape->lat = $request->lat;
     	$shape->lng = $request->lng;
         $shape->zoom = $request->zoom;
+        $shape->user_id = Auth::id();
     	$shape->save();
 
     	return redirect(route('view.polygon', ['shape' => $shape->id]));

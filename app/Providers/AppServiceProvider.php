@@ -15,10 +15,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer('layouts.adminlayout', function($view) {
-            // $myvar = 'test';
-            $view->with('data', array('shapes' => Shape::get()));
-        });
+        // dd(auth()->user());
+        // if(Auth::check()){
+        //     // dd('a');
+        //     view()->composer('layouts.adminlayout', function($view) {
+        //         // $myvar = 'test';
+        //         $view->with('data', array('shapes' => Shape::where('user_id', Auth::id())->get()));
+        //         dd($view);
+        //     });
+        // }
+        
+
     }
 
     /**
