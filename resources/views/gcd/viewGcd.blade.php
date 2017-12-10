@@ -141,16 +141,16 @@
 @endsection
 @section('footer')
 <div class="row">
-  <div class="col-md-3">
+  {{-- <div class="col-md-3">
     <div class="form-group">
       <label>Luas:</label>
       <p><span id="luas">0</span> m<sup>2</sup></p>
-      {{-- <input type="text" name=""  class="form-control"> --}}
+      <input type="text" name=""  class="form-control">
     </div>
-  </div>
+  </div> --}}
   <div class="col-md-3">
     <div class="form-group">
-      <label>Keliling:</label>
+      <label>Jarak:</label>
       <p><span id="keliling">0</span> m</p>
       {{-- <input type="text" name=""  class="form-control"> --}}
     </div>
@@ -158,15 +158,16 @@
   </div>
   <div class="col-md-3">
     	<button class="btn btn-danger" id="reset">Clear Map</button>
-    	<form style="display: inline;" id="form" method="POST" action="{{route('update.polygon', ['shape'=> $shape->id])}}">
+    	<form style="display: inline;" id="form" method="POST" action="{{route('update.gcd', ['shape' => $shape->id])}}">
     		<input type="hidden" id="path" name="path"  class="form-control">
     		{{csrf_field()}}
     		<input type="hidden" id="lat" name="lat"  class="form-control">
     		<input type="hidden" id="lng" name="lng"  class="form-control">
     		<input type="hidden" id="zoom" name="zoom"  class="form-control">
+    		
 
 			{{-- <input type="text" name=""  class="form-control"> --}}
-    		<button class="btn btn-primary" type="submit">Submit</button>
+    		<button class="btn btn-primary" type="submit" id="submit">Submit</button>
     	</form>
     	
    </div>
@@ -193,7 +194,6 @@
 		var flag = 0;
 		var draw;
 		var infoWindow;
-		var ea;
 		var drawingManager;
 		// jqdoEe_rp[j[{o|BxydBroaA
 		// window.initMap = function(){
@@ -223,21 +223,22 @@
 
 		// 	draw = bermudaTriangle;
 		// 	compute();
-			// bermudaTriangle.setMap(map);
-			// bermudaTriangle.addListener('set_at', compute);
-			// bermudaTriangle.getPaths().forEach(function(path, index){
+		// 	bermudaTriangle.setMap(map);
+		// 	bermudaTriangle.addListener('set_at', compute);
+		// 	bermudaTriangle.getPaths().forEach(function(path, index){
 
-			//   google.maps.event.addListener(path, 'insert_at', compute);
+		// 	  google.maps.event.addListener(path, 'insert_at', compute);
 
-			//   google.maps.event.addListener(path, 'remove_at', compute);
+		// 	  google.maps.event.addListener(path, 'remove_at', compute);
 
-			//   google.maps.event.addListener(path, 'set_at', compute);
+		// 	  google.maps.event.addListener(path, 'set_at', compute);
 
-			// });
-		 //  	drawingManager.setMap(map);
+		// 	});
+		//   	drawingManager.setMap(map);
 		// }
 		/* get center of a polygon */
-		
+		// var lat = myPolygon.my_getBounds().getCenter().lat();
+		// var lng = myPolygon.my_getBounds().getCenter().lng();
 		window.initMap = function () {
 			hasil = {!!$shape->path!!};
 			var pathz = [];
@@ -245,47 +246,55 @@
 	    		console.log(hasil[index].lat);
 	    		pathz[index] = new google.maps.LatLng({lat: hasil[index].lat, lng: hasil[index].lng}) 
 	    	});
-
-			
 			map = new google.maps.Map(document.getElementById('map'), {
 			  center: {lat: {{$shape->lat}}, lng: {{$shape->lng}} },
 			  zoom: {{$shape->zoom}},
 			  fullscreenControl: false
 			});
+			// map.addListener('mousemove', function(){
+			// 	console.log('aha');
+			// })
 			drawingManager = new google.maps.drawing.DrawingManager({
 			    drawingMode: null,
-			    // polygonOptions: {
+			    // polylineOptions: {
 			    // 	editable: true,
-			    // 	paths: ea
 			    // },
 			    drawingControl: true,
 			    drawingControlOptions: {
 			      position: google.maps.ControlPosition.TOP_CENTER,
 			      drawingModes: []
-
 			    },
 			});
-			var bermudaTriangle = new google.maps.Polygon({
-			    paths: pathz,
-			    editable:true
+			var bermudaTriangle = new google.maps.Polyline({
+			    path: pathz,
+			    editable:true,
+			    geodesic:true
 			});
+			bermudaTriangle.setMap(map);
 			draw = bermudaTriangle;
 			compute();
-			bermudaTriangle.setMap(map);
-			// var lat = bermudaTriangle.getPath().getCenter().lat();
-			// var lng = bermudaTriangle.getPath().getCenter().lng();
-			bermudaTriangle.addListener('set_at', compute);
-			bermudaTriangle.getPaths().forEach(function(path, index){
-
-			  google.maps.event.addListener(path, 'insert_at', compute);
-
-			  google.maps.event.addListener(path, 'remove_at', compute);
-
-			  google.maps.event.addListener(path, 'set_at', compute);
-
+			bermudaTriangle.getPath().addListener('set_at', compute);
+			bermudaTriangle.getPath().addListener('insert_at', compute);
+			bermudaTriangle.getPath().addListener('remove_at', compute);
+			bermudaTriangle.addListener('click', function(e){
+				// console.log(e.path);
+				index = getNearestVertex(bermudaTriangle, e.latLng);
+			    // console.log(rc)
+				// console
+				var bounds = new google.maps.LatLngBounds();
+				bounds.extend(draw.getPath().getAt(index));
+				bounds.extend(draw.getPath().getAt(index+1));
+				var lengthInfo = new google.maps.InfoWindow;
+				
+				var length = (google.maps.geometry.spherical.computeDistanceBetween(draw.getPath().getAt(index), draw.getPath().getAt(index+1)));
+				lengthInfo.setContent(parseFloat(Math.round(length * 100) / 100).toFixed(2)+" m");
+				lengthInfo.setPosition(bounds.getCenter())
+				lengthInfo.open(map);
 			});
-		  	drawingManager.setMap(map);
+			
+			drawingManager.setMap(map);
 			infoWindow = new google.maps.InfoWindow;
+
 			var card = document.getElementById('pac-card');
 	        var input = document.getElementById('pac-input');
 	        // var types = document.getElementById('type-selector');
@@ -332,33 +341,8 @@
 	            ].join(' ');
 	          }
 
-
-	          // infowindowContent.children['place-icon'].src = place.icon;
-	          // infowindowContent.children['place-name'].textContent = place.name;
-	          // infowindowContent.children['place-address'].textContent = address;
-	          // infowindow.open(map, marker);
 	        });
-        // Try HTML5 geolocation.
-	        // if (navigator.geolocation) {
-	        //   navigator.geolocation.getCurrentPosition(function(position) {
-	        //     var pos = {
-	        //       lat: position.coords.latitude,
-	        //       lng: position.coords.longitude
-	        //     };
-
-	        //     // infoWindow.setPosition(pos);
-	        //     // infoWindow.setContent('Location found.');
-	        //     // infoWindow.open(map);
-	        //     map.setCenter(pos);
-	        //   }, function() {
-	        //     // handleLocationError(true, infoWindow, map.getCenter());
-	        //   });
-	        // } 
-	        // else {
-	        //   // Browser doesn't support Geolocation
-	        //   // handleLocationError(false, infoWindow, map.getCenter());
-	        // }
-	        // setTimeout(function () { map.invalidateSize() }, 500);
+       
 
 		  	drawingManager.setMap(map);
 		  	drawingManager.addListener('overlaycomplete', function(e){
@@ -372,23 +356,72 @@
 		  	draw = newShape;
 		  	compute();
 			newShape.type = e.type;
-			// newShape.addListener('click', function() {
-			// 	var area = google.maps.geometry.spherical.computeLength(newShape.getPath())
-			// 	console.log(area);
+			newShape.addListener('drag', function() {
+				var area = google.maps.geometry.spherical.computeLength(newShape.getPath())
+				console.log(area);
 				
-			// });
-			newShape.addListener('set_at', compute);
-			newShape.getPaths().forEach(function(path, index){
-
-			  google.maps.event.addListener(path, 'insert_at', compute);
-
-			  google.maps.event.addListener(path, 'remove_at', compute);
-
-			  google.maps.event.addListener(path, 'set_at', compute);
-
 			});
+			newShape.getPath().addListener('set_at', compute);
+			newShape.getPath().addListener('insert_at', compute);
+			newShape.getPath().addListener('remove_at', compute);
+			newShape.addListener('click', function(e){
+				// console.log(e.path);
+				index = getNearestVertex(newShape, e.latLng);
+			    // console.log(rc)
+				// console
+				var bounds = new google.maps.LatLngBounds();
+				bounds.extend(draw.getPath().getAt(index));
+				bounds.extend(draw.getPath().getAt(index+1));
+				var lengthInfo = new google.maps.InfoWindow;
+				
+				var length = (google.maps.geometry.spherical.computeDistanceBetween(draw.getPath().getAt(index), draw.getPath().getAt(index+1)));
+				lengthInfo.setContent(parseFloat(Math.round(length * 100) / 100).toFixed(2)+" m");
+				lengthInfo.setPosition(bounds.getCenter())
+				lengthInfo.open(map);
+			});
+
+			// newShape.getPath().forEach(function(path, index){
+			// // console.log(path);
+			//   path.addListener('insert_at', compute);
+
+			//   path.addListener('remove_at', compute);
+
+			//   path.addListener('set_at', compute);
+			//   // google.maps.event.addListener(path, 'drag', compute);
+
+			// });
 		  });
 		
+		}
+		function getNearestVertex(poly, pLatLng) {
+		    // test to get nearest point on poly to the pLatLng point
+		    // click is on poly, so the nearest vertex is the smallest diff between
+		    var minDist = 9999999999;
+		    var minDiff = 9999999999;
+		    var path = poly.getPath();
+		    var count = path.length || 0;
+
+		    for (var n = 0; n < count - 1; n++) {
+		        if (n == 0) {
+		            point = path.getAt(n); 
+		            dist = google.maps.geometry.spherical.computeDistanceBetween(pLatLng, point);
+		        }
+		        //google.maps.geometry.spherical.computeDistanceBetween(aLatLng, bLatLng)
+		        var pointb = path.getAt(n + 1);
+		        distb =  google.maps.geometry.spherical.computeDistanceBetween(pLatLng, pointb);
+		        distp2p = google.maps.geometry.spherical.computeDistanceBetween(point, pointb);
+		        var pdiff = dist + distb - distp2p;
+
+		        //alert(n + " / " +dist +" + " +distb +" - " +distp2p +" = " +pdiff);
+		        if (pdiff < minDiff) {
+		            minDiff = pdiff.toFixed(3);
+		            index = n;
+		        }
+		        point = pointb;
+		        dist = distb;
+		    } //-> end for
+		    //alert(index +":" + minDiff);
+		    return index;
 		}
 		function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 	        infoWindow.setPosition(pos);
@@ -398,39 +431,30 @@
 	        infoWindow.open(map);
 	    }
 		function compute(event){
-			// console.log(draw.getPath())
-			var peth = [];
 			draw.getPath().forEach(function (path, index) {
-				console.log(path);
-				peth.push(new google.maps.LatLng({lat: path.lat(), lng: path.lng()}));
 				console.log(path.lat()+', '+path.lng());
 			});
-
-			
-			// console.log(google.maps.Data.Polygon(draw.getPath().getArray()).getArray())
-
-			// var peth = draw.getPath().getArray();
-			// console.log(peth);
-			// var peth= new google.maps.MVCArray(peth);
-			// draw.getPath().push(draw.getPath().getAt(0));
-
-			// var tes = google.maps.Data.Polygon(draw.getPath().getArray())
-			// peth.push(peth.getAt(0));
-			// console.log(peth);
-
-			// console.log(google.maps.geometry.poly.isLocationOnEdge(draw.getPath().getAt(draw.getPath().getLength-1),draw))
 			var area = google.maps.geometry.spherical.computeArea(draw.getPath())
-			// console.log(area);
-			$('#luas').html(area);
-			console.log(draw.getPath().getArray());
-			peth.push(draw.getPath().getAt(0));
-			console.log(peth)
-			var length = google.maps.geometry.spherical.computeLength(peth);
-			// console.log(length);
-			$('#keliling').html(length);
+			console.log(area);
+			// $('#luas').html(area);
+			// console.log(event)
+			// draw.getPath().forEach(function(path, index){
+			// 	if(index !== 0){
+			// 		// console.log(draw.getPath().get);
+			// 		var bounds = new google.maps.LatLngBounds();
+			// 		bounds.extend(draw.getPath().getAt(index));
+			// 		bounds.extend(draw.getPath().getAt(index-1));
+			// 		var lengthInfo = new google.maps.InfoWindow;
+					
+					// var length = (google.maps.geometry.spherical.computeDistanceBetween(draw.getPath().getAt(index), draw.getPath().getAt(index-1)));
+			// 		lengthInfo.setContent(parseFloat(Math.round(length * 100) / 100).toFixed(2)+" m");
+			// 		lengthInfo.setPosition(bounds.getCenter())
+			// 		lengthInfo.open(map);
+			// 	}
+			// })
+			var length = google.maps.geometry.spherical.computeLength(draw.getPath())
 			console.log(draw.getPath());
-
-			// draw.getPath().pop();
+			$('#keliling').html(length);
 
 			// var list = google.maps.geometry.encoding.encodePath(draw.getPath());
 			// console.log(list);
@@ -454,22 +478,37 @@
 
 	    $('#reset').on('click', function(){
 	    	// draw.setMap(null);
-	    	draw.getPaths().clear();
+	    	draw.getPath().clear();
 	    	drawingManager.setOptions({
-			    drawingMode: google.maps.drawing.OverlayType.POLYGON,
-			    polygonOptions: {
+			    drawingMode: google.maps.drawing.OverlayType.POLYLINE,
+			    polylineOptions: {
 			    	editable: true,
 			    },
 			    drawingControl: true,
 			    drawingControlOptions: {
 			      position: google.maps.ControlPosition.TOP_CENTER,
-			      drawingModes: ['polygon']
+			      drawingModes: ['polyline']
 			    },
 			})
+	    	// initMap()
 	    	// draw.setMap(map)
 	    });
-	    $('#form').submit(function(event){
-	    	var bounds = new google.maps.LatLngBounds();
+	    $('#form').on('submit', function(event){
+	    	//  	var bounds = new google.maps.LatLngBounds();
+
+    // // Get paths from polygon and set event listeners for each path separately
+		  //   draw.getPath().forEach(function (path, index) {
+		    
+		  //       bounds.extend(path);
+		  //   });
+		  //   // bounds.getCenter()
+		  //   $('#lat').val(bounds.getCenter().lat());
+		  //   $('#lng').val(bounds.getCenter().lng());
+		  //   $('#zoom').val(map.getZoom());
+		    
+	   //  	var list = google.maps.geometry.encoding.encodePath(draw.getPath());
+	   //  	$('#path').val(list);
+	   		var bounds = new google.maps.LatLngBounds();
 	    	var array = [];
     // Get paths from polygon and set event listeners for each path separately
 		    draw.getPath().forEach(function (path, index) {
@@ -490,6 +529,7 @@
 	    	// console.log()
 	    	// list = new google.maps.MVCArray(JSON.parse(list));
 	    	hasil =JSON.parse(list);
+	    	// event.preventDefault();
 	    })
 	})
 </script>

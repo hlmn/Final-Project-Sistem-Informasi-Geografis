@@ -146,6 +146,27 @@
                 @endif
               </ul>
             </li>
+            <li id="aktifgcd" class="treeview menu-open">
+              <a href="#" class="warnain disableJs">
+                <i class="fa fa-users"></i> <span>Great Circle Distance</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+               <ul class="treeview-menu" style="">
+                <li class="" id="anakgcd">
+                  <a href="{{route('index.gcd')}}"><i class="fa fa-plus"></i> <span>Create</span></a>
+                </li>
+                @if(Auth::check())
+
+                  @foreach(Auth::user()->shapes->where('tipe', 'gcd')->sortByDesc('created_at')->values() as $shape)
+                    <li class="" id="anak{{$shape->id}}">
+                      <a href="{{route('view.gcd', ['shape' => $shape->id])}}"><i class="fa fa-circle-o"></i> <span>{{$shape->id}}</span></a>
+                    </li>
+                  @endforeach
+                @endif
+              </ul>
+            </li>
             
            
             

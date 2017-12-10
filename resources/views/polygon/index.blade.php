@@ -372,12 +372,37 @@
 	        infoWindow.open(map);
 	    }
 		function compute(event){
+			// console.log(draw.getPath())
+			var peth = [];
+			draw.getPath().forEach(function (path, index) {
+				console.log(path);
+				peth.push(new google.maps.LatLng({lat: path.lat(), lng: path.lng()}));
+				console.log(path.lat()+', '+path.lng());
+			});
+			// console.log(google.maps.Data.Polygon(draw.getPath().getArray()).getArray())
+
+			// var peth = draw.getPath().getArray();
+			// console.log(peth);
+			// var peth= new google.maps.MVCArray(peth);
+			// draw.getPath().push(draw.getPath().getAt(0));
+
+			// var tes = google.maps.Data.Polygon(draw.getPath().getArray())
+			// peth.push(peth.getAt(0));
+			// console.log(peth);
+
+			// console.log(google.maps.geometry.poly.isLocationOnEdge(draw.getPath().getAt(draw.getPath().getLength-1),draw))
 			var area = google.maps.geometry.spherical.computeArea(draw.getPath())
-			console.log(area);
+			// console.log(area);
 			$('#luas').html(area);
-			var length = google.maps.geometry.spherical.computeLength(draw.getPath())
-			console.log(length);
+			console.log(draw.getPath().getArray());
+			peth.push(draw.getPath().getAt(0));
+			console.log(peth)
+			var length = google.maps.geometry.spherical.computeLength(peth);
+			// console.log(length);
 			$('#keliling').html(length);
+			console.log(draw.getPath());
+
+			// draw.getPath().pop();
 
 			// var list = google.maps.geometry.encoding.encodePath(draw.getPath());
 			// console.log(list);
@@ -418,19 +443,34 @@
 	    });
 	    $('#form').on('submit', function(event){
 	    	var bounds = new google.maps.LatLngBounds();
-
+	    	var array = [];
     // Get paths from polygon and set event listeners for each path separately
 		    draw.getPath().forEach(function (path, index) {
-		    
+		    	array[index] = {lat: path.lat(), lng: path.lng()}
 		        bounds.extend(path);
 		    });
 		    // bounds.getCenter()
 		    $('#lat').val(bounds.getCenter().lat());
 		    $('#lng').val(bounds.getCenter().lng());
 		    $('#zoom').val(map.getZoom());
-	    	var list = google.maps.geometry.encoding.encodePath(draw.getPath());
-	    	$('#path').val(list);
+
+	    	var list = google.maps.geometry.encoding.encodePath(draw.getPath().getArray());
 	    	// event.preventDefault();
+	    	
+	    	list = JSON.stringify(array)
+	    	$('#path').val(list);
+	    	// confirm(list);/
+	    	// console.log()
+	    	// list = new google.maps.MVCArray(JSON.parse(list));
+	    	hasil =JSON.parse(list);
+	    	// var taikucing = [];
+	    	// $.each(hasil, function(index){
+	    	// 	console.log(hasil[index].lat);
+	    	// 	taikucing[index] = new google.maps.LatLng({lat: hasil[index].lat, lng: hasil[index].lng}) 
+	    	// })
+	    	
+	    	// console.log(taikucing);
+	    	// alert(google.maps.geometry.spherical.computeArea(taikucing));
 	    })
 	})
 </script>

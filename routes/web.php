@@ -33,6 +33,15 @@ Route::group(['prefix' => 'polyline'], function(){
 	});
 	
 });
+Route::group(['prefix' => 'gcd'], function(){
+	Route::get('/', 'GCDController@index')->name('index.gcd');
+	Route::group(['middleware' => ['auth']], function(){
+		Route::post('/submit', 'GCDController@submit')->name('submit.gcd');
+		Route::post('/update/{shape}', 'GCDController@update')->name('update.gcd');
+		Route::get('/view/{shape}', 'GCDController@view')->name('view.gcd');
+	});
+	
+});
 
 Auth::routes();
 

@@ -240,7 +240,12 @@
 		// var lat = myPolygon.my_getBounds().getCenter().lat();
 		// var lng = myPolygon.my_getBounds().getCenter().lng();
 		window.initMap = function () {
-			ea = google.maps.geometry.encoding.decodePath('{{$shape->path}}')
+			hasil = {!!$shape->path!!};
+			var pathz = [];
+	    	$.each(hasil, function(index){
+	    		console.log(hasil[index].lat);
+	    		pathz[index] = new google.maps.LatLng({lat: hasil[index].lat, lng: hasil[index].lng}) 
+	    	});
 			map = new google.maps.Map(document.getElementById('map'), {
 			  center: {lat: {{$shape->lat}}, lng: {{$shape->lng}} },
 			  zoom: {{$shape->zoom}},
@@ -261,7 +266,7 @@
 			    },
 			});
 			var bermudaTriangle = new google.maps.Polyline({
-			    path: ea,
+			    path: pathz,
 			    editable:true
 			});
 			bermudaTriangle.setMap(map);
@@ -425,8 +430,11 @@
 	        infoWindow.open(map);
 	    }
 		function compute(event){
-			// var area = google.maps.geometry.spherical.computeArea(draw.getPath())
-			// console.log(area);
+			draw.getPath().forEach(function (path, index) {
+				console.log(path.lat()+', '+path.lng());
+			});
+			var area = google.maps.geometry.spherical.computeArea(draw.getPath())
+			console.log(area);
 			// $('#luas').html(area);
 			// console.log(event)
 			// draw.getPath().forEach(function(path, index){
@@ -437,7 +445,7 @@
 			// 		bounds.extend(draw.getPath().getAt(index-1));
 			// 		var lengthInfo = new google.maps.InfoWindow;
 					
-			// 		var length = (google.maps.geometry.spherical.computeDistanceBetween(draw.getPath().getAt(index), draw.getPath().getAt(index-1)));
+					// var length = (google.maps.geometry.spherical.computeDistanceBetween(draw.getPath().getAt(index), draw.getPath().getAt(index-1)));
 			// 		lengthInfo.setContent(parseFloat(Math.round(length * 100) / 100).toFixed(2)+" m");
 			// 		lengthInfo.setPosition(bounds.getCenter())
 			// 		lengthInfo.open(map);
@@ -485,20 +493,41 @@
 	    	// draw.setMap(map)
 	    });
 	    $('#form').on('submit', function(event){
-	    	var bounds = new google.maps.LatLngBounds();
+	    	//  	var bounds = new google.maps.LatLngBounds();
 
+    // // Get paths from polygon and set event listeners for each path separately
+		  //   draw.getPath().forEach(function (path, index) {
+		    
+		  //       bounds.extend(path);
+		  //   });
+		  //   // bounds.getCenter()
+		  //   $('#lat').val(bounds.getCenter().lat());
+		  //   $('#lng').val(bounds.getCenter().lng());
+		  //   $('#zoom').val(map.getZoom());
+		    
+	   //  	var list = google.maps.geometry.encoding.encodePath(draw.getPath());
+	   //  	$('#path').val(list);
+	   		var bounds = new google.maps.LatLngBounds();
+	    	var array = [];
     // Get paths from polygon and set event listeners for each path separately
 		    draw.getPath().forEach(function (path, index) {
-		    
+		    	array[index] = {lat: path.lat(), lng: path.lng()}
 		        bounds.extend(path);
 		    });
 		    // bounds.getCenter()
 		    $('#lat').val(bounds.getCenter().lat());
 		    $('#lng').val(bounds.getCenter().lng());
 		    $('#zoom').val(map.getZoom());
-		    
-	    	var list = google.maps.geometry.encoding.encodePath(draw.getPath());
+
+	    	var list = google.maps.geometry.encoding.encodePath(draw.getPath().getArray());
+	    	// event.preventDefault();
+	    	
+	    	list = JSON.stringify(array)
 	    	$('#path').val(list);
+	    	// confirm(list);/
+	    	// console.log()
+	    	// list = new google.maps.MVCArray(JSON.parse(list));
+	    	hasil =JSON.parse(list);
 	    	// event.preventDefault();
 	    })
 	})

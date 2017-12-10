@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ContentFilters</key>
+	<dict/>
+	<key>auto_connect</key>
+	<true/>
+	<key>data</key>
+	<dict>
+		<key>connection</key>
+		<dict>
+			<key>database</key>
+			<string>calltenant</string>
+			<key>host</key>
+			<string>db.muhammadhilman.com</string>
+			<key>kcid</key>
+			<string>2424004930979978624</string>
+			<key>name</key>
+			<string>db.muhammadhilman.com</string>
+			<key>port</key>
+			<integer>3306</integer>
+			<key>rdbms_type</key>
+			<string>mysql</string>
+			<key>sslCACertFileLocation</key>
+			<string></string>
+			<key>sslCACertFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslCertificateFileLocation</key>
+			<string></string>
+			<key>sslCertificateFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslKeyFileLocation</key>
+			<string></string>
+			<key>sslKeyFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>type</key>
+			<string>SPTCPIPConnection</string>
+			<key>useSSL</key>
+			<integer>0</integer>
+			<key>user</key>
+			<string>hlmn</string>
+		</dict>
+		<key>session</key>
+		<dict>
+			<key>connectionEncoding</key>
+			<string>utf8</string>
+			<key>contentFilter</key>
+			<dict/>
+			<key>contentPageNumber</key>
+			<integer>1</integer>
+			<key>contentSelection</key>
+			<data>
+			YnBsaXN0MDDUAQIDBAUGNjdYJHZlcnNpb25YJG9iamVjdHNZJGFy
+			Y2hpdmVyVCR0b3ASAAGGoK0HCBUWFxgZHSQoLDA0VSRudWxs0wkK
+			CwwQFFdOUy5rZXlzWk5TLm9iamVjdHNWJGNsYXNzow0OD4ACgAOA
+			BKMREhOABYAGgAiADFR0eXBlVHJvd3NUa2V5c18QJlNlbGVjdGlv
+			bkRldGFpbFR5cGVQcmltYXJ5S2V5ZWREZXRhaWxz0wkKCxobHKCg
+			gAfSHh8gIVokY2xhc3NuYW1lWCRjbGFzc2VzXxATTlNNdXRhYmxl
+			RGljdGlvbmFyeaMgIiNcTlNEaWN0aW9uYXJ5WE5TT2JqZWN00goL
+			JSehJoAJgAvSCykqK1lOUy5zdHJpbmeACllpZF9yZXZpZXfSHh8t
+			Ll8QD05TTXV0YWJsZVN0cmluZ6MtLyNYTlNTdHJpbmfSHh8xMl5O
+			U011dGFibGVBcnJheaMxMyNXTlNBcnJhedIeHyI1oiIjXxAPTlNL
+			ZXllZEFyY2hpdmVy0Tg5VGRhdGGAAQAIABEAGgAjAC0AMgA3AEUA
+			SwBSAFoAZQBsAHAAcgB0AHYAegB8AH4AgACCAIcAjACRALoAwQDC
+			AMMAxQDKANUA3gD0APgBBQEOARMBFQEXARkBHgEoASoBNAE5AUsB
+			TwFYAV0BbAFwAXgBfQGAAZIBlQGaAAAAAAAAAgEAAAAAAAAAOgAA
+			AAAAAAAAAAAAAAAAAZw=
+			</data>
+			<key>contentSortColIsAsc</key>
+			<true/>
+			<key>contentViewport</key>
+			<string>{{0, 0}, {1367, 816}}</string>
+			<key>isToolbarVisible</key>
+			<true/>
+			<key>queries</key>
+			<string>select id_event from event where 2 &lt; (select avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) from review where review.sender ='Tenant');
+
+
+select avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) from review;
+
+select * from `review` having avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &lt; 5;
+
+</string>
+			<key>table</key>
+			<string>review</string>
+			<key>view</key>
+			<string>SP_VIEW_CUSTOMQUERY</string>
+			<key>windowVerticalDividerPosition</key>
+			<real>214</real>
+		</dict>
+	</dict>
+	<key>encrypted</key>
+	<false/>
+	<key>format</key>
+	<string>connection</string>
+	<key>queryFavorites</key>
+	<array/>
+	<key>queryHistory</key>
+	<array>
+		<string>select * from event where (nama_event LIKE '%surabaya%' or lokasi LIKE '%surabaya%') and exists (select * from booth_type where event.id_event = booth_type.id_event and harga_booth &gt;= 1 and harga_booth &lt;= 10000000) and exists (select id_event from review where event.id_event = review.id_event group by id_event having avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &lt;= 5 and avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &gt;= 0)</string>
+		<string>select * from event where (nama_event LIKE '%jakarta%' or lokasi LIKE '%jakarta%') and exists (select * from booth_type where event.id_event = booth_type.id_event and harga_booth &gt;= 1 and harga_booth &lt;= 10000000) and exists (select id_event from review where event.id_event = review.id_event group by id_event having avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &lt;= 5 and avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &gt;= 0)</string>
+		<string>select * from event where (nama_event LIKE '%jakarta%' or lokasi LIKE '%jakarta%') and exists (select * from booth_type where event.id_event = booth_type.id_event and harga_booth &gt;= 1 and harga_booth &lt;= 10000000) and exists (select id_event from review where event.id_event = review.id_event group by id_event having avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &lt;= 5 and avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &gt;= 5)</string>
+		<string>select * from `event` where (`nama_event` LIKE '%jakarta%' or `lokasi` LIKE '%jakarta%') and exists (select * from `booth_type` where `event`.`id_event` = `booth_type`.`id_event` and `harga_booth` &gt;= 1 and `harga_booth` &lt;= 10000000) and exists (select `id_event` from `review` where `event`.`id_event` = `review`.`id_event` group by `id_event` having avg((review`.`ketepatan_waktu_event+review`.`venue_event+review`.`hiburan_event+review`.`fasilitas_event)/4) &lt;= 5 and avg((review`.`ketepatan_waktu_event+review`.`venue_event+review`.`hiburan_event+review`.`fasilitas_event)/4) &gt;= 5)</string>
+		<string>select * from `event` where (`nama_event` LIKE '%jakarta%' or `lokasi` LIKE '%jakarta%') and exists (select * from `booth_type` where `event`.`id_event` = `booth_type`.`id_event` and `harga_booth` &gt;= 1 and `harga_booth` &lt;= 10000000) and exists (select `id_event` from `review` where `event`.`id_event` = `review`.`id_event` group by `id_event` having `avg((review`.`ketepatan_waktu_event+review`.`venue_event+review`.`hiburan_event+review`.`fasilitas_event)/4)` &lt; 5 and `avg((review`.`ketepatan_waktu_event+review`.`venue_event+review`.`hiburan_event+review`.`fasilitas_event)/4)` &gt; 5)</string>
+		<string>select * from `event` where (`nama_event` LIKE '%jakarta%' or `lokasi` LIKE '%jakarta%') and exists (select * from `booth_type` where `event`.`id_event` = `booth_type`.`id_event` and `harga_booth` &gt;= 1 and `harga_booth` &lt;= 10000000) and exists (select `id_event` from `review` where `event`.`id_event` = `review`.`id_event` group by `id_event` having `avg((review`.`ketepatan_waktu_event+review`.`venue_event+review`.`hiburan_event+review`.`fasilitas_event)/4)` &lt;= 5 and `avg((review`.`ketepatan_waktu_event+review`.`venue_event+review`.`hiburan_event+review`.`fasilitas_event)/4)` &gt;= 5)</string>
+		<string>%jakarta%</string>
+		<string>select * from `event` where (`nama_event` LIKE %jakarta% or `lokasi` LIKE %jakarta%) and exists (select * from `booth_type` where `event`.`id_event` = `booth_type`.`id_event` and `harga_booth` &gt;= 1 and `harga_booth` &lt;= 10000000) and exists (select `id_event` from `review` where `event`.`id_event` = `review`.`id_event` group by `id_event` having `avg((review`.`ketepatan_waktu_event+review`.`venue_event+review`.`hiburan_event+review`.`fasilitas_event)/4)` &lt;= 5 and `avg((review`.`ketepatan_waktu_event+review`.`venue_event+review`.`hiburan_event+review`.`fasilitas_event)/4)` &gt;= 5)</string>
+		<string>select * from `event` where (`nama_event` LIKE %jakarta% or `lokasi` LIKE %jakarta%) and exists (select * from `booth_type` where `event`.`id_event` = `booth_type`.`id_event` and `harga_booth` &gt;= 1 and `harga_booth` &lt;= 10000000) and exists (select `id_event` from `review` where `event`.`id_event` = `review`.`id_event` group by `id_event` having `avg((review`.`ketepatan_waktu_event+review`.`venue_event+review`.`hiburan_event+review`.`fasilitas_event)/4)` &lt;= 5 and `avg((review`.`ketepatan_waktu_event+review`.`venue_event+review`.`hiburan_event+review`.`fasilitas_event)/4)` &gt;= 5))</string>
+		<string>select * from event where 
+(nama_event LIKE 'surabaya' or lokasi LIKE 'surabaya')
+ and exists (select * from booth_type where event.id_event = booth_type.id_event and harga_booth &gt;= 1 and harga_booth &lt;= 10000000)
+ and exists (select id_event 
+ 	from review 
+ 	where event.id_event = review.id_event 
+ 	group by id_event 
+ 	having avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &lt; 5 
+ and avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &gt; 2)</string>
+		<string>select * from event where 
+(nama_event LIKE 'jakarta' or lokasi LIKE 'jakarta')
+ and exists (select * from booth_type where event.id_event = booth_type.id_event and harga_booth &gt;= 1 and harga_booth &lt;= 10000000)</string>
+		<string>select * from event where 
+(nama_event LIKE 'jakarta' or lokasi LIKE 'jakarta')
+ and exists (select * from booth_type where event.id_event = booth_type.id_event and harga_booth &gt;= 1 and harga_booth &lt;= 10000000)
+ and exists (select id_event 
+ 	from review 
+ 	where event.id_event = review.id_event 
+ 	group by id_event 
+ 	having avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &lt; 5 
+ and avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &gt; 2)</string>
+		<string>--  and avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &gt; 2);
+
+
+
+
+select id_event 
+ 	from review 
+--  	where event.id_event = review.id_event 
+ 	group by id_event 
+ 	having avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &lt; 5 and avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &gt; 2</string>
+		<string>--  and avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &gt; 2);
+
+
+
+
+select id_event 
+ 	from review 
+--  	where event.id_event = review.id_event 
+ 	group by id_event 
+ 	having avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &lt; 5</string>
+		<string>--  and avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &gt; 2);
+
+
+
+
+select id_event 
+ 	from review 
+--  	where event.id_event = review.id_event 
+ 	group by id_event 
+ 	having avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &gt; 5</string>
+		<string>--  and avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &gt; 2);
+
+
+
+
+select id_event 
+ 	from review 
+ 	where event.id_event = review.id_event 
+ 	group by id_event 
+ 	having avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &lt; 5</string>
+		<string>select * from event where 
+(nama_event LIKE 'jakarta' or lokasi LIKE 'jakarta')
+ and exists (select * from booth_type where event.id_event = booth_type.id_event and harga_booth &gt;= 1 and harga_booth &lt;= 10000000)
+ and exists (select id_event 
+ 	from review 
+ 	where event.id_event = review.id_event 
+ 	group by id_event 
+ 	having avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4) &lt; 5 )</string>
+		<string>select * from event where 
+(nama_event LIKE 'jakarta' or lokasi LIKE 'jakarta')
+ and exists (select * from booth_type where event.id_event = booth_type.id_event and harga_booth &gt;= 1 and harga_booth &lt;= 10000000)
+ and exists (select id_event 
+ 	from review 
+ 	where event.id_event = review.id_event 
+ 	group by id_event 
+ 	having avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4)) &lt; 5 
+ and avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4)) &gt; 2)</string>
+		<string>select * from event where 
+(nama_event LIKE 'jakarta' or lokasi LIKE 'jakarta')
+ and exists (select * from booth_type where event.id_event = booth_type.id_event and harga_booth &gt;= 1 and harga_booth &lt;= 10000000)
+ and exists (select id_event 
+ 	from review 
+ 	where event.id_event = review.id_event 
+ 	group by id_event 
+ 	having avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4)) &lt; 5 
+ and avg((review.ketepatan_waktu_event+review.venue_event+review.hiburan_event+review.fasilitas_event)/4)) &gt; 2</string>
+		<string>) &gt; 2</string>
+	</array>
+	<key>rdbms_type</key>
+	<string>mysql</string>
+	<key>rdbms_version</key>
+	<string>5.7.19-log</string>
+	<key>version</key>
+	<integer>1</integer>
+</dict>
+</plist>
